@@ -1,0 +1,139 @@
+/* Component and utility styles used across hero and service sections. */
+
+@layer components {
+    /* Hero overlay gradient using existing theme tokens */
+    .hero-gradient {
+        background: linear-gradient(
+            135deg,
+            hsl(var(--primary) / 0.60) 0%,
+            hsl(var(--secondary) / 0.60) 100%
+        );
+    }
+
+    .accent-gradient {
+        background: var(--gradient-accent);
+    }
+
+    /* Shadows */
+    .shadow-justice {
+        box-shadow: var(--shadow-glow);
+    }
+
+    .shadow-card {
+        box-shadow: var(--shadow-glass);
+    }
+
+    .shadow-hover {
+        box-shadow: var(--shadow-elevated);
+    }
+
+    /* Transitions */
+    .transition-smooth { transition: var(--transition-smooth); }
+    .transition-bounce { transition: var(--transition-bounce); }
+
+    /* Floating visual */
+    .float-animation { animation: float 6s ease-in-out infinite; }
+
+    .glow-hover { transition: var(--transition-smooth); }
+    .glow-hover:hover { box-shadow: 0 0 30px hsl(var(--secondary) / 0.5); }
+
+    /* Service Card Effects (background comes from Card component) */
+    .service-card {
+        transition: var(--transition-smooth);
+    }
+    .service-card:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: var(--shadow-elevated);
+    }
+
+    /* Interactive card effects for hero/home cards */
+    .tilt-on-hover { transform-style: preserve-3d; transition: var(--transition-smooth); }
+    .tilt-on-hover:hover { transform: perspective(800px) rotateX(3deg) rotateY(-3deg) translateY(-2px); }
+
+    .shine-on-hover { position: relative; overflow: hidden; }
+    .shine-on-hover::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -75%;
+        width: 50%;
+        height: 200%;
+        background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0) 100%);
+        transform: rotate(25deg);
+        transition: left .6s ease;
+        pointer-events: none;
+    }
+    .shine-on-hover:hover::after { left: 125%; }
+
+    /* Text Gradients using available tokens */
+    .text-gradient-primary {
+        background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .text-gradient-accent {
+        background: var(--gradient-accent);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Link underline reveal */
+    .link-underline {
+        background-image: linear-gradient(currentColor, currentColor);
+        background-size: 0% 2px;
+        background-repeat: no-repeat;
+        background-position: left 100%;
+        transition: background-size 200ms ease;
+    }
+    .link-underline:hover { background-size: 100% 2px; }
+
+    /* Button hover glows */
+    .hover-glow-primary:hover { box-shadow: 0 0 24px hsl(var(--primary) / 0.35); }
+    .hover-glow-secondary:hover { box-shadow: 0 0 24px hsl(var(--secondary) / 0.35); }
+    .hover-scale { transition: transform .25s ease; }
+    .hover-scale:hover { transform: scale(1.05); }
+}
+
+@layer utilities {
+    /* Keyframes */
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes zoomIn {
+        from { opacity: 0; transform: scale(0.98); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(30px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Animation helpers */
+    .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+    .animate-slide-in-right { animation: slideInRight 0.8s ease-out forwards; }
+    .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+    .animate-zoom-in { animation: zoomIn 0.6s ease-out forwards; }
+    .animate-delay-100 { animation-delay: 0.1s; }
+    .animate-delay-200 { animation-delay: 0.2s; }
+    .animate-delay-300 { animation-delay: 0.3s; }
+    .animate-delay-400 { animation-delay: 0.4s; }
+
+   
+   
+}
