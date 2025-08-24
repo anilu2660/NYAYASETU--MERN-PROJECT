@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Phone, Mail, MapPin, Clock, Send, MessageSquare, User, Building } from "lucide-react";
-import InteractiveMap from "../../Components/InteractiveMap";
+
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -631,7 +631,7 @@ const Contact = () => {
                   <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">Location Map</h3>
                 </div>
                 
-                <InteractiveMap height="400px" />
+             
               </div>
               
               {/* Corner Decoration */}
