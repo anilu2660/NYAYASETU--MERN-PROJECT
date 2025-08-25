@@ -47,6 +47,9 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/contact", require("./routes/contact"));
 app.use("/api/newsletter", require("./routes/newsletter"));
 app.use("/api/files", require("./routes/fileUpload"));
+app.use("/api/efiling", require("./routes/eFiling"));
+const authRoutes = require("./routes/auth"); // adjust path if needed
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("Auth backend running ✅");
@@ -70,7 +73,9 @@ app.use('*', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+
+
+const PORT = process.env.PORT || 3001;
 
 // Start server
 app.listen(PORT, (err) => {

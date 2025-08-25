@@ -19,6 +19,8 @@ interface FileUploadProps {
   maxSize?: number; // in MB
   acceptedTypes?: string[];
   className?: string;
+  filingType?: string;
+  courtLevel?: string;
 }
 
 const FileUpload = ({
@@ -27,7 +29,9 @@ const FileUpload = ({
   maxFiles = 10,
   maxSize = 10, // 10MB
   acceptedTypes = ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png'],
-  className = ""
+  className = "",
+  filingType = "petition",
+  courtLevel = "district"
 }: FileUploadProps) => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -84,53 +88,56 @@ const FileUpload = ({
       setUploadedFiles(prev => [...prev, ...newUploadedFiles]);
       onFilesSelected?.(validFiles);
 
-      // Simulate upload process
-      simulateUpload(newUploadedFiles);
+      // Actually upload files
+      uploadFiles(newUploadedFiles, validFiles);
     }
   };
 
-  const simulateUpload = (files: UploadedFile[]) => {
+  const uploadFiles = async (files: UploadedFile[], originalFiles: File[]) => {
     setIsUploading(true);
     
-    files.forEach((file, index) => {
-      // Simulate progress
-      const interval = setInterval(() => {
-        setUploadedFiles(prev => 
-          prev.map(f => {
-            if (f.id === file.id) {
-              const newProgress = Math.min((f.progress || 0) + Math.random() * 30, 100);
-              return {
-                ...f,
-                progress: newProgress,
-                status: newProgress >= 100 ? 'success' : 'uploading'
-              };
-            }
-            return f;
-          })
-        );
-      }, 200);
-
-      // Complete upload after 2-4 seconds
-      setTimeout(() => {
-        clearInterval(interval);
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const originalFile = originalFiles[i];
+      
+      try {
+        const formData = new FormData();
+        formData.append('files', originalFile);
+        formData.append('category', 'petition'); // Default category
+        formData.append('filingType', filingType);
+        formData.append('courtLevel', courtLevel);
+        
+        const response = await fetch('http://localhost:3001/api/files/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          setUploadedFiles(prev => 
+            prev.map(f => 
+              f.id === file.id 
+                ? { ...f, status: 'success' as const, progress: 100 }
+                : f
+            )
+          );
+        } else {
+          throw new Error('Upload failed');
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
         setUploadedFiles(prev => 
           prev.map(f => 
             f.id === file.id 
-              ? { ...f, status: 'success' as const, progress: 100 }
+              ? { ...f, status: 'error' as const, error: 'Upload failed' }
               : f
           )
         );
-        
-        // Check if all uploads are complete
-        setTimeout(() => {
-          const allComplete = uploadedFiles.every(f => f.status === 'success');
-          if (allComplete) {
-            setIsUploading(false);
-            onFileUpload?.(uploadedFiles);
-          }
-        }, 500);
-      }, 2000 + Math.random() * 2000);
-    });
+      }
+    }
+    
+    setIsUploading(false);
+    onFileUpload?.(files);
   };
 
   const handleDrag = (e: React.DragEvent) => {

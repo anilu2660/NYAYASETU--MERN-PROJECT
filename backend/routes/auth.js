@@ -121,6 +121,7 @@ router.get("/profile", auth, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+//reset Password
 
 
 module.exports = router;

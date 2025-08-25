@@ -7,13 +7,15 @@ import { Card } from "@/Components/Components/card";
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 
+
+
 interface AuthFormProps {
   mode: "signin" | "signup";
   onToggleMode: () => void;
 }
 
 export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
-  const { signup, login } = useAuth();
+  const { signup, login, } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -110,7 +112,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
           errorMessage = "Cannot reach the server. Check your internet connection.";
           errorCode = "NO_CONNECTION";
         }
-        else if (error.response?.status >= 500) {
+        else if (error.response?.status !== undefined && error.response.status >= 500) {
           errorMessage = "Server error. Please try again later.";
           errorCode = "SERVER_ERROR";
         }
@@ -253,15 +255,13 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
             </div>
           )}
 
-          {mode === "signin" && (
-            <div className="flex justify-end">
-              <button
-                type="button"
-                className="text-sm text-primary hover:text-primary-glow transition-colors"
-              >
-                Reset your password securely
-              </button>
-            </div>
+{mode === "signin" && (
+  <div className="flex justify-end">
+    <button className="text-sm text-primary hover:text-primary-glow transition-colors"
+    >
+      Reset your password securely
+    </button>
+  </div>
           )}
 
           <Button

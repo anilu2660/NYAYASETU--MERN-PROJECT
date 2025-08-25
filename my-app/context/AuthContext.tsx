@@ -11,6 +11,7 @@ type AuthContextType = {
   loading: boolean;
   signup: (data: { name: string; email: string; password: string }) => Promise<void>;
   login: (data: { email: string; password: string }) => Promise<void>;
+  
   logout: () => void;
   refreshProfile: () => Promise<void>;
 };
@@ -66,8 +67,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     router.push("/login");
   };
 
+  // inside AuthContext.tsx
+
+
   return (
-    <AuthContext.Provider value={{ user, loading, signup, login, logout, refreshProfile }}>
+    <AuthContext.Provider value={{ user, loading, signup, login, logout, refreshProfile, }}>
       {children}
     </AuthContext.Provider>
   );
